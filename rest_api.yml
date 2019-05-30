@@ -1,0 +1,99 @@
+openapi: "3.0.0"
+info:
+  description: REST API for de_exercise.
+  version: "1.0.0"
+  title: REST API for de_exercise.
+
+servers:
+  - url: /api
+
+paths:
+  /exercise/get_paragraph:
+    get:
+      operationId: exercise.api.get_paragraph
+      tags:
+        - Exercise
+      summary: Get a paragraph exercise.
+      description: Get a paragraph exercise.
+      parameters:
+        - name: document_title
+          in: query
+          description: Title of document.
+          schema:
+            type: string
+          required: True
+        - name: paragraph_index
+          in: query
+          description: Paragraph number to get.
+          schema:
+            type: integer
+          required: True
+        - name: ex_types
+          in: query
+          description: Type of exercises to get.
+          schema:
+            type: array
+            items:
+              type: string
+          required: False
+      responses:
+        200:
+          description: Successfully returned a paragraph exercise.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exercises'
+
+  /exercise/get_document_list:
+    get:
+      operationId: exercise.api.get_document_list
+      tags:
+        - Exercise
+      summary: Get a list of all the distinct document titles.
+      description: Get a list of all the distinct document titles.
+      responses:
+        200:
+          description: Successfully returned a list of document titles.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+
+components:
+  schemas:
+    topic_word:
+      properties:
+        text:
+          type: string
+        lemma:
+          type: string
+        pos:
+          type: string
+        index:
+          type: integer
+        type:
+          type: string
+        feats:
+          type: array
+          items: {}
+    exercise:
+      properties:
+        document_title:
+          type: string
+        paragraph_start:
+          type: string
+        paragraph_index:
+          type: integer
+        sentence_index:
+          type: integer
+        sentence_text:
+          type: string
+        schema:
+          type: array
+          items:
+            $ref: "#/components/schemas/topic_word"
+    exercises:
+      type: array
+      items:
+        $ref: "#/components/schemas/exercise"
