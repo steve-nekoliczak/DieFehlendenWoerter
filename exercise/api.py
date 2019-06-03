@@ -1,7 +1,7 @@
 from json import loads
 import requests
 
-from api_settings.de_exercise import get_paragraph_url
+from api_settings.de_exercise import get_paragraph_url, get_document_list_url
 
 
 def get_paragraph(document_title, paragraph_index, ex_types=[]):
@@ -17,5 +17,10 @@ def get_paragraph(document_title, paragraph_index, ex_types=[]):
 
 
 def get_document_list():
-    pass
+    response = requests.get(url=get_document_list_url)
+    if response.status_code == 200:
+        content = loads(response.content)
+        return content
+    else:
+        return "get_document_list failed.", 404
 

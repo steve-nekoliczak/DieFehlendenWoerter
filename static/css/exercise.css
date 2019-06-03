@@ -1,0 +1,17 @@
+
+.ex_word.correct {
+    background-color: lightgreen;
+}
+
+.ex_word.incorrect {
+    background-color: red;
+}
+
+#exercise_div {
+    font-family: 'Century Gothic';
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.ex_span {
+}

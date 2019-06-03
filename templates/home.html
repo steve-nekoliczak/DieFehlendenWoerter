@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Application Home Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="static/css/exercise.css">
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="static/css/skeleton.css">
     <script
       src="http://code.jquery.com/jquery-3.3.1.min.js"
       integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -13,9 +16,18 @@
 <body>
     <div class="container">
         <h1 class="banner">Fehlende Wörter</h1>
+        <div id="document_select_div">
+            <select id="document_select">
+                <option value="" selected>Please choose a document</option>
+            </select>
+        </div>
+        <br>
         <div id="exercise_div">
         </div>
-        <button id="new_ex">New Exercise</button>
+        <div id="buttons_div">
+            <button id="new_ex">New Exercise</button>
+            <button id="check_ex">Check Answers</button>
+        </div>
         <div class="error">
         </div>
     </div>
