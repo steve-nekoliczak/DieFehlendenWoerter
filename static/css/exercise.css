@@ -17,15 +17,24 @@
     width: 50px;
 }
 
-ul {
+.ul_links {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    display: table;
 }
 
-li {
+.li_links_first {
+    border-left: 1px solid black;
+}
+
+.li_links {
     display: inline;
     float: left;
-    padding: 14px 16px;
-    border: 1px solid black;
+    padding: 2px 16px;
+    border-right: 1px solid black;
+}
+
+div {
+    width: 100%;
 }

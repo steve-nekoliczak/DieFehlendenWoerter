@@ -138,6 +138,7 @@ ns.view = (function() {
         },
 
         'grade_attempt': function($input, grade_result) {
+            $input.addClass('answered');
             if(grade_result['is_correct']) {
                 $input.addClass('correct');
             } else {
@@ -156,7 +157,8 @@ ns.controller = (function(m, v) {
 
     var init_ex_words = function() {
         $('.ex_word').blur(function() {
-            if (!($(this).val() === '')) {
+            if (!($(this).val() === '')
+                && !$(this).attr('class').includes('answered')) {
                 model.post_ex_attempt(
                     $(this).attr('mongo_id'),
                     $(this).attr('tw_index'),

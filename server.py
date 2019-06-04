@@ -24,6 +24,12 @@ def home():
     return render_template("home.html")
 
 
+@flask_app.route("/stats")
+def stats():
+    # return render_template("stats.html")
+    return "Not available yet."
+
+
 @flask_app.route("/favicon.ico")
 def favicon():
     return send_from_directory(os.path.join(os.path.dirname(__file__),
