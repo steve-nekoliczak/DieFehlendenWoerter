@@ -41,6 +41,26 @@ ns.model = (function(){
             .done(function(data) {
                 $body.trigger('model_get_document_list_success', [data]);
             })
+        },
+
+        'post_ex_attempt': function(ex_id, topic_word_index, guess) {
+            var ajax_options = {
+                type: 'GET',
+                url: 'api/exercise/post_ex_attempt',
+                data: {
+                    ex_id: ex_id,
+                    topic_word_index: topic_word_index,
+                    guess: guess
+                }
+            };
+            $.ajax(ajax_options)
+            .done(function(data) {
+                $body.trigger('model_post_ex_attempt_success', data);
+            })
+            // TODO setup fail case
+            .fail(function(xhr, textStatus, errorThrown) {
+                // $event_pump.trigger('model_error', [xhr, textStatus, errorThrown]);
+            });
         }
 
     }
@@ -87,9 +107,11 @@ ns.view = (function() {
                             }));
                             snt_fragment = " ";
                             $ex.append($('<input>', {
-                                id: j + "_" + ex_json[i]._id.$oid,
+                                id: j + '_' + ex_json[i]._id.$oid,
+                                tw_index: j,
+                                mongo_id: ex_json[i]._id.$oid,
                                 placeholder: ex_json[i].topic_words[tw_index].lemma,
-                                class: 'ex_word'
+                                class: 'ex_word ' + ex_json[i].topic_words[tw_index].type
                             }));
                         } else {
                             snt_fragment += words[j];
@@ -100,6 +122,7 @@ ns.view = (function() {
                 }
             };
         },
+
 
         'clear_ex': function() {
             $('#exercise_div').empty();
@@ -112,7 +135,16 @@ ns.view = (function() {
                     id: title
                 }));
             })
+        },
+
+        'grade_attempt': function($input, grade_result) {
+            if(grade_result['is_correct']) {
+                $input.addClass('correct');
+            } else {
+                $input.addClass('incorrect');
+            }
         }
+
     }
 }());
 
@@ -122,30 +154,35 @@ ns.controller = (function(m, v) {
     var model = m,
         view = v;
 
+    var init_ex_words = function() {
+        $('.ex_word').blur(function() {
+            if (!($(this).val() === '')) {
+                model.post_ex_attempt(
+                    $(this).attr('mongo_id'),
+                    $(this).attr('tw_index'),
+                    $(this).val()
+                );
+            }
+        })
+    };
+
     $('#new_ex').click(function() {
         view.clear_ex();
-        model.get_paragraph($('#document_select').val(), -1, ['adjective']);
-    });
-
-    $('#check_ex').click(function() {
-        $('.ex_word').each(function() {
-            var key = $(this).attr('id');
-            if ($(this).val() == answers[key]) {
-                $(this).addClass('correct');
-            } else {
-                $(this).addClass('incorrect');
-            }
-        });
+        model.get_paragraph($('#document_select').val(), -1, ['article']);
     });
 
     $body.on('model_get_ex_success', function(x, data) {
         view.print_ex(data);
-        $('#missing-word').focus();
+        init_ex_words();
     });
 
     $body.on('model_get_document_list_success', function(x, data) {
         view.fill_document_select(data);
-        $('#missing-word').focus();
+    });
+
+    $body.on('model_post_ex_attempt_success', function(x, data) {
+        var $input = $('#' + data['topic_word_index'] + '_' + data['ex_id']);
+        view.grade_attempt($input, data);
     });
 
 }(ns.model, ns.view));
