@@ -1,7 +1,17 @@
 
 ns = {};
-hints = {};
-answers = {};
+
+var clean_verb_form = {
+    'Fin': 'finite',
+    'Part': 'participle',
+    'Inf': 'infinitive',
+    'Ger': 'gerund'
+
+};
+var clean_verb_tense ={
+    'Pres': 'present',
+    'Past': 'past'
+};
 
 ns.model = (function(){
     var $body = $('body');
@@ -41,6 +51,19 @@ ns.model = (function(){
             .done(function(data) {
                 $body.trigger('model_get_document_list_success', [data]);
             })
+        },
+
+        'get_ex_type_list': function() {
+            var ajax_options = {
+                type: 'GET',
+                url: 'api/exercise/get_ex_type_list',
+                accepts: 'application/json',
+                dataType: 'json'
+            };
+            $.ajax(ajax_options)
+                .done(function(data) {
+                    $body.trigger('model_get_ex_type_list_success', [data]);
+                })
         },
 
         'post_ex_attempt': function(ex_id, topic_word_index, guess) {
@@ -94,8 +117,6 @@ ns.view = (function() {
                         var tw = ex_json[i].topic_words[j];
                         tw_indices.push(tw.index);
                         var key = tw.index + "_" + ex_json[i]._id.$oid;
-                        hints[key] = tw.feats;
-                        answers[key] = tw.text;
                     }
 
                     for (var j = 0; j < words.length; ++j) {
@@ -106,12 +127,30 @@ ns.view = (function() {
                                 class: 'ex_span'
                             }));
                             snt_fragment = " ";
+                            var tw_obj = ex_json[i].topic_words[tw_index];
+
+                            // Make special placeholder notes for verbs
+                            // The verb lemma itself is usually not enough
+                            // information to make an informed guess.
+                            var placeholder = '';
+                            if (tw_obj.type == 'verb') {
+                                var verb_form = clean_verb_form[tw_obj.feats.VerbForm];
+                                if (tw_obj.feats.Tense) {
+                                    var verb_tense = clean_verb_tense[tw_obj.feats.Tense];
+                                    placeholder = tw_obj.lemma + ' (' + verb_form + ', ' + verb_tense + ')';
+                                } else {
+                                    placeholder = tw_obj.lemma + ' (' + verb_form + ')';
+                                }
+                            } else {
+                                placeholder = tw_obj.lemma;
+                            }
+
                             $ex.append($('<input>', {
                                 id: j + '_' + ex_json[i]._id.$oid,
                                 tw_index: j,
                                 mongo_id: ex_json[i]._id.$oid,
-                                placeholder: ex_json[i].topic_words[tw_index].lemma,
-                                class: 'ex_word ' + ex_json[i].topic_words[tw_index].type
+                                placeholder: placeholder,
+                                class: 'ex_word ' + tw_obj.type
                             }));
                         } else {
                             snt_fragment += words[j];
@@ -137,6 +176,15 @@ ns.view = (function() {
             })
         },
 
+        'fill_ex_type_select': function(ex_type_list) {
+            $.each(ex_type_list, function(i, name) {
+                $('#ex_type_select').append($('<option>', {
+                    text: name,
+                    id: 'ex_' + name
+                }));
+            })
+        },
+
         'grade_attempt': function($input, grade_result) {
             $input.addClass('answered');
             if(grade_result['is_correct']) {
@@ -156,21 +204,24 @@ ns.controller = (function(m, v) {
         view = v;
 
     var init_ex_words = function() {
-        $('.ex_word').blur(function() {
-            if (!($(this).val() === '')
-                && !$(this).attr('class').includes('answered')) {
-                model.post_ex_attempt(
-                    $(this).attr('mongo_id'),
-                    $(this).attr('tw_index'),
-                    $(this).val()
-                );
+        $('.ex_word').keypress(function(k) {
+            if (k.keyCode == 13) {
+                if (!($(this).val() === '')
+                    && !$(this).attr('class').includes('answered')) {
+                    model.post_ex_attempt(
+                        $(this).attr('mongo_id'),
+                        $(this).attr('tw_index'),
+                        $(this).val()
+                    );
+                }
+                $(this).nextAll('.ex_word').first().focus();
             }
         })
     };
 
     $('#new_ex').click(function() {
         view.clear_ex();
-        model.get_paragraph($('#document_select').val(), -1, ['article']);
+        model.get_paragraph($('#document_select').val(), -1, [$('#ex_type_select').val()]);
     });
 
     $body.on('model_get_ex_success', function(x, data) {
@@ -180,6 +231,10 @@ ns.controller = (function(m, v) {
 
     $body.on('model_get_document_list_success', function(x, data) {
         view.fill_document_select(data);
+    });
+
+    $body.on('model_get_ex_type_list_success', function(x, data) {
+        view.fill_ex_type_select(data);
     });
 
     $body.on('model_post_ex_attempt_success', function(x, data) {
@@ -192,5 +247,6 @@ ns.controller = (function(m, v) {
 
 $(function() {
     ns.model.get_document_list();
+    ns.model.get_ex_type_list();
 });
 

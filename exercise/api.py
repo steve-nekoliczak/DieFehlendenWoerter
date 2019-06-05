@@ -1,7 +1,7 @@
 from json import loads
 import requests
 
-from api_settings.de_exercise import get_paragraph_url, get_document_list_url
+from api_settings.de_exercise import get_paragraph_url, get_document_list_url, get_ex_type_list_url
 from api_settings.dfw_grader import post_ex_attempt_url
 
 
@@ -24,6 +24,15 @@ def get_document_list():
         return content
     else:
         return "get_document_list failed.", 404
+
+
+def get_ex_type_list():
+    response = requests.get(url=get_ex_type_list_url)
+    if response.status_code == 200:
+        content = loads(response.content)
+        return content
+    else:
+        return "get_ex_type_list failed.", 404
 
 
 def post_ex_attempt(ex_id, topic_word_index, guess):
