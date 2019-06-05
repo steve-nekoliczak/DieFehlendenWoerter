@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Application Home Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="static/css/dfw.css">
     <link rel="stylesheet" href="static/css/exercise.css">
     <link rel="stylesheet" href="static/css/normalize.css">
     <link rel="stylesheet" href="static/css/skeleton.css">
@@ -14,18 +15,10 @@
     </script>
 </head>
 <body>
+    <div id="banner">
+        {% include "header.html" %}
+    </div>
     <div class="container">
-        <h1 class="banner">Die Fehlende Wörter</h1>
-        <div class="nav">
-            <ul class="ul_links">
-                <li class="li_links li_links_first">
-                    <a href='{{ url_for("home") }}'>Home</a>
-                </li>
-                <li class="li_links">
-                    <a href='{{ url_for("stats") }}'>Stats</a>
-                </li>
-            </ul>
-        </div>
         <br>
         <div id="selectors_div">
             <select id="document_select">
