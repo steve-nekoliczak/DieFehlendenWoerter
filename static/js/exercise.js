@@ -53,12 +53,13 @@ ns.model = (function(){
             })
         },
 
-        'get_ex_type_list': function() {
+        'get_ex_type_list': function(document_title) {
             var ajax_options = {
                 type: 'GET',
                 url: 'api/exercise/get_ex_type_list',
                 accepts: 'application/json',
-                dataType: 'json'
+                dataType: 'json',
+                data: {'document_title': document_title}
             };
             $.ajax(ajax_options)
                 .done(function(data) {
@@ -69,7 +70,7 @@ ns.model = (function(){
         'post_ex_attempt': function(ex_id, topic_word_index, guess) {
             var ajax_options = {
                 type: 'GET',
-                url: 'api/exercise/post_ex_attempt',
+                url: 'api/grader/post_ex_attempt',
                 data: {
                     ex_id: ex_id,
                     topic_word_index: topic_word_index,
@@ -204,6 +205,7 @@ ns.controller = (function(m, v) {
         view = v;
 
     var init_ex_words = function() {
+        $('.ex_word').first().focus();
         $('.ex_word').keypress(function(k) {
             if (k.keyCode == 13) {
                 if (!($(this).val() === '')
@@ -214,7 +216,12 @@ ns.controller = (function(m, v) {
                         $(this).val()
                     );
                 }
-                $(this).nextAll('.ex_word').first().focus();
+                var $next = $(this).nextAll('.ex_word');
+                if ($next.length > 0) {
+                    $next.first().focus();
+                } else {
+                    $('#new_ex').focus();
+                }
             }
         })
     };
@@ -222,6 +229,10 @@ ns.controller = (function(m, v) {
     $('#new_ex').click(function() {
         view.clear_ex();
         model.get_paragraph($('#document_select').val(), -1, [$('#ex_type_select').val()]);
+    });
+
+    $('#document_select').change(function() {
+        model.get_ex_type_list($('#document_select').val());
     });
 
     $body.on('model_get_ex_success', function(x, data) {
@@ -238,7 +249,7 @@ ns.controller = (function(m, v) {
     });
 
     $body.on('model_post_ex_attempt_success', function(x, data) {
-        var $input = $('#' + data['topic_word_index'] + '_' + data['ex_id']);
+        var $input = $('#' + data['topic_word_index'] + '_' + data['ex_id'].$oid);
         view.grade_attempt($input, data);
     });
 
@@ -247,6 +258,5 @@ ns.controller = (function(m, v) {
 
 $(function() {
     ns.model.get_document_list();
-    ns.model.get_ex_type_list();
 });
 
