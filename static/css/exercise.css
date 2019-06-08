@@ -4,7 +4,7 @@
 }
 
 .ex_word.incorrect {
-    background-color: red;
+    background-color: salmon;
 }
 
 #exercise_div {
@@ -17,21 +17,7 @@
     width: 50px;
 }
 
-.ul_links {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: table;
-}
-
-.li_links_first {
-    border-left: 1px solid black;
-}
-
-.li_links {
-    display: inline;
-    float: left;
-    padding: 2px 16px;
-    border-right: 1px solid black;
+#take_these {
+    padding-left: 40px;
 }
 

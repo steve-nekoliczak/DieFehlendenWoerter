@@ -26,8 +26,7 @@ def home():
 
 @flask_app.route("/stats")
 def stats():
-    # return render_template("stats.html")
-    return "Not available yet."
+    return render_template("stats.html")
 
 
 @flask_app.route("/favicon.ico")
