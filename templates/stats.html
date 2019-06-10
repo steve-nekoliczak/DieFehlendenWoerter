@@ -6,6 +6,7 @@
     <title>Application Home Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
     <link rel="stylesheet" href="static/css/dfw.css">
+    <link rel="stylesheet" href="static/css/stats.css">
     <link rel="stylesheet" href="static/css/normalize.css">
     <link rel="stylesheet" href="static/css/skeleton.css">
     <script
@@ -23,10 +24,33 @@
 <div id="banner">
     {% include "header.html" %}
 </div>
+<div id="selector_div" class="one columns">
+    <fieldset id="articles_set">
+
+        <div class="item">
+            <label class="section_label">articles</label>
+        </div>
+        <div class="item">
+            <input id="art_nom_checkbox" type="checkbox" class="article_checkbox">
+            <label for="art_nom_checkbox">nominative</label>
+        </div>
+        <div class="item">
+            <input id="art_acc_checkbox" type="checkbox" class="article_checkbox">
+            <label for="art_acc_checkbox">accusative</label>
+        </div>
+        <div class="item">
+            <input id="art_dat_checkbox" type="checkbox" class="article_checkbox">
+            <label for="art_dat_checkbox">dative</label>
+        </div>
+        <div class="item">
+            <input id="art_gen_checkbox" type="checkbox" class="article_checkbox">
+            <label for="art_gen_checkbox">genitive</label>
+        </div>
+
+    </fieldset>
+</div>
 <div class="container">
-    <div id="chart_div">
-        <canvas id="article_chart" width="50" height="30"></canvas>
-    </div>
+    <div id="chart_div"/>
 </div>
 </body>
 <script src="static/js/stats.js"></script>

@@ -25,3 +25,7 @@ div {
     border-right: 1px solid black;
 }
 
+#header_border_div {
+    border-top: 1px solid black;
+    padding: 10px;
+}

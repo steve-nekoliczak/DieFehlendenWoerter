@@ -270,8 +270,9 @@ select:focus {
   outline: 0; }
 label,
 legend {
-  display: block;
+  display: inline;
   margin-bottom: .5rem;
+  margin-left: .5rem;
   font-weight: 600; }
 fieldset {
   padding: 0;
@@ -344,7 +345,7 @@ input,
 textarea,
 select,
 fieldset {
-  margin-bottom: 1.5rem; }
+  margin-bottom: 0rem; }
 pre,
 blockquote,
 dl,

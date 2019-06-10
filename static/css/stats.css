@@ -1,0 +1,23 @@
+fieldset {
+}
+
+.item {
+    display: block;
+    width: 200px;
+    border-right: 1px solid black;
+}
+
+label {
+    display: inline;
+    vertical-align: middle;
+}
+
+input[type=checkbox] {
+    display: inline;
+    vertical-align: middle;
+}
+
+.section_label {
+    border-bottom: 1px solid black;
+}
+
