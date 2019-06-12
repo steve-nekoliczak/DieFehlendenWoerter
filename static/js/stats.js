@@ -1,12 +1,13 @@
 
 ns = {};
+var adjective_stats = {};
 var article_stats = {};
 
-// article: criteria
+// criteria
 var cases = ['Nom', 'Acc', 'Dat', 'Gen'];
 var defs = ['Def', 'Ind'];
 var genders = ['Masc', 'Fem', 'Neut', 'Plur'];
-// article: code to english dicts
+// code to english dicts
 var d_cases = {
     'Nom': 'nominative',
     'Acc': 'accusative',
@@ -25,17 +26,25 @@ var d_genders = {
 };
 // checkbox id to case name
 var d_checkbox_name = {
+    "adj_nom_checkbox": 'Nom',
+    "adj_acc_checkbox": 'Acc',
+    "adj_dat_checkbox": 'Dat',
+    "adj_gen_checkbox": 'Gen',
     "art_nom_checkbox": 'Nom',
     "art_acc_checkbox": 'Acc',
     "art_dat_checkbox": 'Dat',
-    "art_gen_checkbox": 'Gen'
+    "art_gen_checkbox": 'Gen',
 };
 // checkbox id to chart id
 var d_checkbox_chart = {
+    "adj_nom_checkbox": 'adjective_Nom_chart',
+    "adj_acc_checkbox": 'adjective_Acc_chart',
+    "adj_dat_checkbox": 'adjective_Dat_chart',
+    "adj_gen_checkbox": 'adjective_Gen_chart',
     "art_nom_checkbox": 'article_Nom_chart',
     "art_acc_checkbox": 'article_Acc_chart',
     "art_dat_checkbox": 'article_Dat_chart',
-    "art_gen_checkbox": 'article_Gen_chart'
+    "art_gen_checkbox": 'article_Gen_chart',
 };
 
 
@@ -53,7 +62,6 @@ ns.model = (function(){
 
     return {
 
-        // def get_stats(ex_type, from_datetime=None, to_datetime=None):
         'get_stats': function(ex_type, from_datetime, to_datetime) {
             var ajax_options = {
                 type: 'GET',
@@ -66,10 +74,12 @@ ns.model = (function(){
             };
             $.ajax(ajax_options)
                 .done(function(data) {
-                    if (ex_type == 'article') {
+                    if (ex_type == 'adjective') {
+                        adjective_stats = data;
+                    }
+                    else if (ex_type == 'article') {
                         article_stats = data;
                     }
-                    // $body.trigger('model_get_stats_success', [data]);
                 })
             /*
             // TODO setup fail case
@@ -83,6 +93,86 @@ ns.model = (function(){
 
 ns.view = (function() {
     return {
+
+        gen_adjective_chart: function (charts_data, case_) {
+            var chart_id = 'adjective_' + case_ + '_chart';
+            $('#chart_div').append($('<canvas>', {
+                id: chart_id,
+                width: '50px',
+                height: '50px'
+            }));
+
+            var correct_data = [];
+            var total_data = [];
+            $.each(genders, function(i, gender) {
+                // These keys need to match the keys of the json dict coming in from the get_ calls.
+                var correct_key = case_ + '_' + gender + '_correct';
+                correct_data.push(charts_data[correct_key]);
+
+                var total_key = case_ + '_' + gender + '_total';
+                total_data.push(charts_data[total_key]);
+            });
+
+            var genders_local = [];
+            $.each(genders, function(i, v) {
+                genders_local.push(d_genders[v]);
+            });
+            var chartData = {
+                labels: genders_local,
+                datasets: [
+                    {
+                        label: 'correct',
+                        backgroundColor: lightgreen,
+                        data: correct_data,
+                        fill: true,
+                    }, {
+                        label: 'total',
+                        backgroundColor: lightgray,
+                        data: total_data,
+                        fill: true,
+                    }
+                ]
+            };
+
+            window.myBar = new Chart( $('#' + chart_id), {
+                type: 'radar',
+                data: chartData,
+                responsive: true,
+                showTooltips: true,
+                options: {
+                    title: {
+                        display: true,
+                        text: 'adjective - ' + d_cases[case_]
+                    },
+                    scale: {
+                        ticks: {
+                            min: 0
+                        }
+                    },
+                    tooltips: {
+                        enabled: true,
+                        mode: 'index',
+                        intersect: true,
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var i = tooltipItem.datasetIndex;
+                                var this_val = tooltipItem.yLabel;
+                                var output = data.datasets[i].label + ': ' + this_val ;
+                                if (data.datasets[i].label == 'correct') {
+                                    // i+1 assumes the next data set is the total count.
+                                    var total = data.datasets[i+1].data[tooltipItem.index];
+                                    var percent = Math.round((this_val / total) * 100);
+                                    if (isNaN(percent))
+                                        percent = 0;
+                                    output += ' (' + percent + '%)';
+                                }
+                                return output;
+                            }
+                        }
+                    },
+                }
+            });
+        },
 
         gen_article_chart: function (charts_data, case_) {
             var chart_id = 'article_' + case_ + '_chart';
@@ -123,43 +213,50 @@ ns.view = (function() {
                         data: total_data,
                         fill: true,
                     }
-			    ]
+                ]
             };
 
-			window.myBar = new Chart( $('#' + chart_id), {
-                    type: 'radar',
-                    data: chartData,
-                    responsive: true,
-                    showTooltips: true,
-                    options: {
-                        title: {
-                            display: true,
-                            text: 'article - ' + d_cases[case_]
-                        },
-                        tooltips: {
-                            enabled: true,
-                            mode: 'index',
-                            intersect: true,
-                            callbacks: {
-                                label: function(tooltipItem, data) {
-                                    var i = tooltipItem.datasetIndex;
-                                    var this_val = tooltipItem.yLabel;
-                                    var output = data.datasets[i].label + ': ' + this_val ; // + ' (' + + ')';
-                                    if (data.datasets[i].label == 'correct') {
-                                        // i+1 assumes the next data set is the total count.
-                                        var total = data.datasets[i+1].data[tooltipItem.index];
-                                        var percent = Math.round((this_val / total) * 100);
-                                        output += ' (' + percent + '%)';
-                                    }
-                                    return output;
+            window.myBar = new Chart( $('#' + chart_id), {
+                type: 'radar',
+                data: chartData,
+                responsive: true,
+                showTooltips: true,
+                options: {
+                    title: {
+                        display: true,
+                        text: 'article - ' + d_cases[case_]
+                    },
+                    scale: {
+                        ticks: {
+                            min: 0
+                        }
+                    },
+                    tooltips: {
+                        enabled: true,
+                        mode: 'index',
+                        intersect: true,
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                var i = tooltipItem.datasetIndex;
+                                var this_val = tooltipItem.yLabel;
+                                var output = data.datasets[i].label + ': ' + this_val ;
+                                if (data.datasets[i].label == 'correct') {
+                                    // i+1 assumes the next data set is the total count.
+                                    var total = data.datasets[i+1].data[tooltipItem.index];
+                                    var percent = Math.round((this_val / total) * 100);
+                                    if (isNaN(percent))
+                                        percent = 0;
+                                    output += ' (' + percent + '%)';
                                 }
+                                return output;
                             }
-                        },
-                    }
-			});
+                        }
+                    },
+                }
+            });
         },
 
-        remove_article_chart: function(chart_id) {
+        remove_chart: function(chart_id) {
             $('#' + chart_id).remove();
         },
 
@@ -172,11 +269,19 @@ ns.controller = (function(m, v) {
     var model = m,
         view = v;
 
+    $('.adjective_checkbox').click(function() {
+        if ($(this).is(':checked', true)) {
+            view.gen_adjective_chart(adjective_stats, d_checkbox_name[$(this).attr('id')]);
+        } else {
+            view.remove_chart(d_checkbox_chart[$(this).attr('id')]);
+        }
+    });
+
     $('.article_checkbox').click(function() {
         if ($(this).is(':checked', true)) {
             view.gen_article_chart(article_stats, d_checkbox_name[$(this).attr('id')]);
         } else {
-            view.remove_article_chart(d_checkbox_chart[$(this).attr('id')]);
+            view.remove_chart(d_checkbox_chart[$(this).attr('id')]);
         }
     });
 
@@ -184,6 +289,7 @@ ns.controller = (function(m, v) {
 
 
 $(function() {
+    ns.model.get_stats('adjective', undefined, undefined);
     ns.model.get_stats('article', undefined, undefined);
 });
 
