@@ -1,12 +1,21 @@
-<h1 class="banner">Die Fehlende Wörter</h1>
-<div class="nav">
-    <ul class="ul_links">
-        <li class="li_links li_links_first">
-            <a href='{{ url_for("home") }}'>Home</a>
-        </li>
-        <li class="li_links">
-            <a href='{{ url_for("stats") }}'>Stats</a>
-        </li>
-    </ul>
-    <div id="header_border_div"/>
-</div>
+<header class="twelve columns" id="banner">
+    <h1 class="banner eight columns">Die Fehlende Wörter</h1>
+    <div class ="container four columns"/>
+        {% if current_user.is_authenticated %}
+        <span>{{ current_user.email }}</span>
+        <span> | </span>
+        <a href="{{ url_for('logout') }}">logout</a>
+        {% endif %}
+    </div>
+    <div class="nav twelve columns">
+        <ul class="ul_links">
+            <li class="li_links li_links_first">
+                <a href="{{ url_for('home') }}">Home</a>
+            </li>
+            <li class="li_links">
+                <a href="{{ url_for('stats') }}">Stats</a>
+            </li>
+        </ul>
+        <div id="header_border_div"/>
+    </div>
+</header>

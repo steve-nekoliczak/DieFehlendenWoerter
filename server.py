@@ -1,9 +1,15 @@
 import argparse
 import os
 
-from flask import render_template, send_from_directory, session
+from flask import (
+    render_template, send_from_directory, redirect, request, url_for
+)
+from flask_login import(
+    login_required, login_user, logout_user
+)
 
-from config import connex_app, flask_app, sess
+from config import connex_app, flask_app
+from models import User
 
 
 def get_args():
@@ -19,12 +25,51 @@ def get_args():
     return a
 
 
+@flask_app.route("/login", methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = bytes(request.form['password'], 'utf-8')
+        user = User(email, password)
+
+        if 'register' in request.form:
+            got_registered = user.register()
+
+            if got_registered:
+                login_user(user)
+                return redirect(url_for('home'))
+            else:
+                return render_template("login.html")
+
+        else:
+            got_authenticated = user.authenticate()
+
+            if got_authenticated:
+                login_user(user)
+                return redirect(url_for('home'))
+            else:
+                return render_template("login.html")
+
+    else:
+        return render_template("login.html")
+
+
+@flask_app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
+@flask_app.route("/")
 @flask_app.route("/home")
+@login_required
 def home():
     return render_template("home.html")
 
 
 @flask_app.route("/stats")
+@login_required
 def stats():
     return render_template("stats.html")
 

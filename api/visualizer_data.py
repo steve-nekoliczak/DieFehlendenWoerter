@@ -5,8 +5,9 @@ from api_settings.dfw_data_visualizer import get_stats_url
 
 
 def get_stats(ex_type, from_datetime=None, to_datetime=None):
+    from config import sess
     response = requests.get(url=get_stats_url,
-                            params={'user_id': 'steve',  # TODO fix this once logins work
+                            params={'user_id': sess['username'],
                                     'ex_type': ex_type,
                                     'from_datetime': from_datetime,
                                     'to_datetime': to_datetime})
