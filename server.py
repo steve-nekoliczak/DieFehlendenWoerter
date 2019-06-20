@@ -2,13 +2,15 @@ import argparse
 import os
 
 from flask import (
-    render_template, send_from_directory, redirect, request, url_for
+    flash, render_template, send_from_directory, redirect, request, url_for
 )
 from flask_login import(
     login_required, login_user, logout_user
 )
+from werkzeug.utils import secure_filename
 
-from config import connex_app, flask_app
+from config import connex_app, flask_app, file_dir
+from api.exercise import put_document
 from models import User
 
 
@@ -19,6 +21,10 @@ def get_args():
     ap.add_argument('-p', '--port', type=int,
                     help="Port number to run this service on.",
                     default=5012)
+
+    ap.add_argument('-f', '--file_dir', type=str,
+                    help="Temporary storage filepath for uploaded text files.",
+                    default=file_dir)
 
     a = ap.parse_args()
 
@@ -74,6 +80,39 @@ def stats():
     return render_template("stats.html")
 
 
+@flask_app.route("/upload_ex", methods=['POST', 'GET'])
+@login_required
+def upload_ex():
+
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file attached')
+            return redirect(request.url)
+
+        title = request.form['title']
+        author = request.form['author']
+        file = request.files['file']
+
+        if file.filename == '':
+            flash('No file selected')
+            return redirect(request.url)
+
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(flask_app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
+        got_put_document = put_document(title, author, filepath)
+        if got_put_document:
+            flash('File uploaded successfully.')
+        else:
+            flash('File failed to upload.')
+
+        return redirect(request.url)
+
+    else:
+        return render_template("upload_ex.html")
+
+
 @flask_app.route("/favicon.ico")
 def favicon():
     return send_from_directory(os.path.join(os.path.dirname(__file__),
@@ -83,6 +122,8 @@ def favicon():
 
 if __name__ == "__main__":
     args = get_args()
+
+    flask_app.config['UPLOAD_FOLDER'] = args.file_dir
 
     connex_app.run(debug=True, port=args.port)
 

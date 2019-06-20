@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>home</title>
+<head>
+    <meta charset="UTF-8">
+    <title>Application Home Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" href="static/css/dfw.css">
+    <link rel="stylesheet" href="static/css/normalize.css">
+    <link rel="stylesheet" href="static/css/skeleton.css">
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+            crossorigin="anonymous">
+    </script>
+</head>
+{% include "header.html" %}
+<body>
+    <div class="container">
+        <form class="twelve columns" action="{{ url_for('upload_ex') }}" method="post",
+            enctype="multipart/form-data">
+            <p>title:</p>
+            <p><input type="text" name="title"/></p>
+            <p>author:</p>
+            <p><input type="text" name="author"/></p>
+            <p>file:</p>
+            <p><input type="file" name="file" value="file"></p>
+            <p>
+                <input type="submit" value="upload" name="upload"/>
+            </p>
+        </form>
+    </div>
+</body>
+</html>
