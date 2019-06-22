@@ -13,6 +13,10 @@ var clean_verb_tense ={
     'Past': 'past'
 };
 
+var ex_text_inputs = {}
+
+var is_cheater_mode = false;
+
 ns.model = (function(){
     var $body = $('body');
 
@@ -98,6 +102,8 @@ ns.view = (function() {
             }
             if (ex_json) {
 
+                ex_text_inputs = {}
+
                 var $ex = $('<p>');
 
                 for (var i = 0; i < ex_json.length; i++) {
@@ -146,8 +152,19 @@ ns.view = (function() {
                                 placeholder = tw_obj.lemma;
                             }
 
+                            var id = j + '_' + ex_json[i]._id.$oid;
+                            ex_text_inputs[id] = {}
+                            ex_text_inputs[id]['normal'] = placeholder;
+                            ex_text_inputs[id]['cheater'] = tw_obj.text;
+
+                            if (is_cheater_mode) {
+                                placeholder = ex_text_inputs[id]['cheater'];
+                            } else {
+                                placeholder = ex_text_inputs[id]['normal'];
+                            }
+
                             $ex.append($('<input>', {
-                                id: j + '_' + ex_json[i]._id.$oid,
+                                id: id,
                                 tw_index: j,
                                 mongo_id: ex_json[i]._id.$oid,
                                 placeholder: placeholder,
@@ -233,6 +250,20 @@ ns.controller = (function(m, v) {
 
     $('#document_select').change(function() {
         model.get_ex_type_list($('#document_select').val());
+    });
+
+    $('#cheater_mode_checkbox').click(function() {
+        if ($(this).is(':checked', true)) {
+            is_cheater_mode = true;
+            $.each($('.ex_word'), function(i, x) {
+                $(this).prop('placeholder', ex_text_inputs[$(this).prop('id')]['cheater']);
+            });
+        } else {
+            is_cheater_mode = false;
+            $.each($('.ex_word'), function(i, x) {
+                $(this).prop('placeholder', ex_text_inputs[$(this).prop('id')]['normal']);
+            });
+        }
     });
 
     $body.on('model_get_ex_success', function(x, data) {
