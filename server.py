@@ -118,6 +118,12 @@ def upload_ex():
         return render_template("upload_ex.html")
 
 
+@flask_app.route("/how_to")
+@login_required
+def how_to():
+    return render_template("how_to.html")
+
+
 @flask_app.route("/favicon.ico")
 def favicon():
     return send_from_directory(os.path.join(os.path.dirname(__file__),

@@ -1,24 +1,31 @@
-<header class="twelve columns" id="banner">
-    <h1 class="banner eight columns">Die Fehlende Wörter</h1>
-    <div class ="container four columns"/>
-        {% if current_user.is_authenticated %}
-        <span>{{ current_user.email }}</span>
-        <span> | </span>
-        <a href="{{ url_for('logout') }}">logout</a>
-        {% endif %}
+<header id="banner">
+    <div class="row">
+        <h1 class="banner eight columns">Die Fehlende Wörter</h1>
+        <div class="four columns">
+            {% if current_user.is_authenticated %}
+            <span>{{ current_user.email }}</span>
+            <span> | </span>
+            <a href="{{ url_for('logout') }}">logout</a>
+            {% endif %}
+        </div>
     </div>
-    <div class="nav twelve columns">
-        <ul class="ul_links">
-            <li class="li_links li_links_first">
-                <a href="{{ url_for('home') }}">home</a>
-            </li>
-            <li class="li_links">
-                <a href="{{ url_for('stats') }}">stats</a>
-            </li>
-            <li class="li_links">
-                <a href="{{ url_for('upload_ex') }}">upload exercise</a>
-            </li>
-        </ul>
-        <div id="header_border_div"/>
+    <div class="row">
+        <div class="nav twelve columns">
+            <ul class="ul_links">
+                <li class="li_links li_links_first">
+                    <a href="{{ url_for('home') }}">home</a>
+                </li>
+                <li class="li_links">
+                    <a href="{{ url_for('stats') }}">stats</a>
+                </li>
+                <li class="li_links">
+                    <a href="{{ url_for('upload_ex') }}">upload exercise</a>
+                </li>
+                <li class="li_links">
+                    <a href="{{ url_for('how_to') }}">how to</a>
+                </li>
+            </ul>
+            <div id="header_border_div"/>
+        </div>
     </div>
 </header>
