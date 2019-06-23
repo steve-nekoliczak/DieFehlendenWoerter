@@ -15,9 +15,13 @@ from models import User
 
 
 def get_args():
-    ap = argparse.ArgumentParser('Process human language sentences into JSON.')
+    ap = argparse.ArgumentParser('German exercise web app.')
 
     # Add args
+    ap.add_argument('-d', '--debug',
+                    action='store_true',
+                    help="Enable debugging mode.")
+
     ap.add_argument('-p', '--port', type=int,
                     help="Port number to run this service on.",
                     default=5012)
@@ -136,5 +140,5 @@ if __name__ == "__main__":
 
     flask_app.config['UPLOAD_FOLDER'] = args.file_dir
 
-    connex_app.run(debug=True, port=args.port)
+    connex_app.run(debug=args.debug, port=args.port)
 
