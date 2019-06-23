@@ -9,7 +9,7 @@ from flask_login import(
 )
 from werkzeug.utils import secure_filename
 
-from config import connex_app, flask_app, file_dir
+from config import connex_app, flask_app, file_dir, login_manager
 from api.exercise import put_document
 from models import User
 
@@ -29,6 +29,11 @@ def get_args():
     a = ap.parse_args()
 
     return a
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('login'))
 
 
 @flask_app.route("/login", methods=['POST', 'GET'])
