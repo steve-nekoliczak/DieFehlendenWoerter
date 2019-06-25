@@ -2,7 +2,7 @@
 A German language learning tool for intermediate to advanced students.
 
 ## What It Does
-Die Fehlenden Wörter (DFW) takes German text and creates exercises by taking out different parts of speech and asking the user to fill in the blanks.
+Die Fehlenden Wörter (DFW) processes German text uploaded by the user and creates exercises by taking out different parts of speech and asking the user to fill in the blanks. This allows the user to practice their knowledge of article, adjective, and verb forms in German with the text that they choose.
 
 ## How To Use
 DFW is currently hosted at: http://steve-nekoliczak.mooo.com
