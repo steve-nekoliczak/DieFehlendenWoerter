@@ -1,10 +1,14 @@
 import os
 from server import connex_app as application
+from server import get_args
 
-activate_this = '/home/steve/projects/DieFehlendeWoerter/DieFehlendenWoerter/venv/bin/activate_this.py'
+activate_this = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                             'venv', 'bin', 'activate_this.py')
 
 if __name__ == "__main__":
+    args = get_args()
     with open(activate_this) as file_:
         exec(file_.read(), dict(__file__=activate_this))
 
-    application.run(debug=True, port=5012)
+    application.run(debug=args.debug, port=args.port)
+
