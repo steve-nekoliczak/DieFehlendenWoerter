@@ -17,6 +17,7 @@ if drive_letter:
 else:
     drive_letter = r'/'
 file_dir = os.path.join(drive_letter, 'data', 'temp')
+flask_app.config['UPLOAD_FOLDER'] = file_dir
 
 login_manager = LoginManager()
 login_manager.init_app(flask_app)
