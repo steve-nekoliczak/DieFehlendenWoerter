@@ -100,15 +100,15 @@ def upload_ex():
 
         title = request.form['title']
         author = request.form['author']
-        file = request.files['file']
+        file_ = request.files['file']
 
-        if file.filename == '':
+        if file_.filename == '':
             flash('No file selected')
             return redirect(request.url)
 
-        filename = secure_filename(file.filename)
+        filename = secure_filename(file_.filename)
         filepath = os.path.join(flask_app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
+        file_.save(filepath)
 
         got_put_document = put_document(title, author, filepath)
         if got_put_document:
