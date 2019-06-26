@@ -17,7 +17,7 @@
 <body>
     <div class="row container">
         <form class="twelve columns" action="{{ url_for('upload_ex') }}" method="post",
-            enctype="multipart/form-data">
+            enctype="multipart/form-data; charset='utf-8'">
             <p>title:</p>
             <p><input type="text" name="title"/></p>
             <p>author:</p>
@@ -26,6 +26,9 @@
             <p><input type="file" name="file" value="file"></p>
             <p>
                 <input type="submit" value="upload" name="upload"/>
+            </p>
+            <p>
+                Ensure your file is utf-8 encoded.
             </p>
         </form>
     </div>
