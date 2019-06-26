@@ -194,6 +194,13 @@ ns.view = (function() {
             })
         },
 
+        'clear_ex_type_select': function() {
+            $('#ex_type_select').empty();
+            $('#ex_type_select').append($('<option>', {
+                text: 'exercise type',
+            }));
+        },
+
         'fill_ex_type_select': function(ex_type_list) {
             $.each(ex_type_list, function(i, name) {
                 $('#ex_type_select').append($('<option>', {
@@ -250,6 +257,7 @@ ns.controller = (function(m, v) {
 
     $('#document_select').change(function() {
         model.get_ex_type_list($('#document_select').val());
+        view.clear_ex_type_select();
     });
 
     $('#cheater_mode_checkbox').click(function() {
