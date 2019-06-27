@@ -13,6 +13,8 @@ DFW uses a microservice architecture made easy with OpenAPI/Swagger. Here's a li
 ## How To Use
 DFW is currently hosted at: http://steve-nekoliczak.mooo.com
 
+DFW currently is only verified to work in Chrome and Chrome-like browsers.
+
 You can login with the credentials `steve.nekoliczak@protonmail.com / abc` or create your own login. See the how to page once logged in to get a quick rundown of how things work.
 
 ## To-Do List
@@ -34,5 +36,7 @@ DFW is a work in progress. Here is a list of features, functionality, and bug fi
 - The natural language processing (NLP) library (`nlp_json`) sometimes includes an open quote character and the first word together as the first indexed entity. The NLP library should separate the two consistently (e.g. `„Der Hund ist klein.“` should __always__ give `sentence[0] = '„'`, `sentence[1] = 'Der'`, rather than sometimes giving `sentence[0] = '„Der'`.
 ### Other
 - Write documentation.
+- Run Apache with SSL.
+- Ensure full functionality with popular browsers.
 
 
