@@ -109,7 +109,7 @@ ns.view = (function() {
                 for (var i = 0; i < ex_json.length; i++) {
 
                     // Need to account for punctuation chars having their own index.
-                    var words = ex_json[i].sentence_text.split(/(?=[-—.,!?:'"“«› ])|(?<=['"„»‹])/g);
+                    var words = ex_json[i].sentence_text.split(/(?=[-—.,!?:;'"“«› ])|(?<=['"„»‹])/g);
 
                     var snt_fragment = "";
 
