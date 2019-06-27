@@ -13,6 +13,8 @@ DFW uses a microservice architecture made easy with OpenAPI/Swagger. Here's a li
 ## How To Use
 DFW is currently hosted at: http://steve-nekoliczak.mooo.com
 
+DFW currently is only verified to work in Chrome and Chrome-like browsers.
+
 You can login with the credentials `steve.nekoliczak@protonmail.com / abc` or create your own login. See the how to page once logged in to get a quick rundown of how things work.
 
 ## To-Do List
@@ -35,5 +37,6 @@ DFW is a work in progress. Here is a list of features, functionality, and bug fi
 ### Other
 - Write documentation.
 - Run Apache with SSL.
+- Ensure full functionality with popular browsers.
 
 
