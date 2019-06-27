@@ -34,5 +34,6 @@ DFW is a work in progress. Here is a list of features, functionality, and bug fi
 - The natural language processing (NLP) library (`nlp_json`) sometimes includes an open quote character and the first word together as the first indexed entity. The NLP library should separate the two consistently (e.g. `„Der Hund ist klein.“` should __always__ give `sentence[0] = '„'`, `sentence[1] = 'Der'`, rather than sometimes giving `sentence[0] = '„Der'`.
 ### Other
 - Write documentation.
+- Run Apache with SSL.
 
 
