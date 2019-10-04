@@ -17,6 +17,20 @@ DFW currently is only verified to work in Chrome and Chrome-like browsers.
 
 You can login with the credentials `steve.nekoliczak@protonmail.com / abc` or create your own login. See the how to page once logged in to get a quick rundown of how things work.
 
+## Dev Install
+
+Note these steps are assuming you will be setting everything up in `$HOME/projects/dfw/`.
+
+```
+mkdir -p $HOME/projects/dfw
+cd $HOME/projects/dfw
+git clone https://github.com/steve-nekoliczak/DieFehlendenWoerter.git
+cd DieFehlendenWoerter
+python3.7 venv env
+source env/bin/activate
+pip3.7 install -r requirements.txt
+```
+
 ## To-Do List
 DFW is a work in progress. Here is a list of features, functionality, and bug fixes planned for implementation:
 ### Frontend
