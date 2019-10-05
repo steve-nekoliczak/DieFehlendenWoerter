@@ -1,11 +1,13 @@
 from json import loads
 import requests
 
-from api_settings.user_auth import register_url, get_info_url
+from config import yml
 
+
+routes = yml['api_routes']['user_auth']
 
 def register(email, password):
-    response = requests.post(url=register_url,
+    response = requests.post(url=routes['register_url'],
                              params={'email': email,
                                      'password': password})
     if response.status_code == 200:
@@ -15,7 +17,7 @@ def register(email, password):
 
 
 def get_info(email):
-    response = requests.get(url=get_info_url,
+    response = requests.get(url=routes['get_info_url'],
                             params={'email': email})
     if response.status_code == 200:
         content = loads(response.content)

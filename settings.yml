@@ -1,0 +1,35 @@
+dev:
+    api_routes:
+        de_exercise:
+            get_paragraph_url:      http://localhost:5011/api/exercise/get_paragraph
+            get_document_list_url:  http://localhost:5011/api/exercise/get_document_list
+            get_ex_type_list_url:   http://localhost:5011/api/exercise/get_ex_type_list
+            put_document_url:       http://localhost:5011/api/exercise/put_document
+
+        dfw_data_visualizer:
+            get_stats_url:          http://localhost:5013/api/visualizer_data/get_stats
+
+        dfw_grader:
+            post_ex_attempt_url:    http://localhost:5013/api/grader/post_ex_attempt
+
+        user_auth:
+            register_url:           http://localhost:5014/api/user/register
+            get_info_url:           http://localhost:5014/api/user/get_info
+
+prod:
+    api_routes:
+        de_exercise:
+            get_paragraph_url:      bogus
+            get_document_list_url:  bogus
+            get_ex_type_list_url:   bogus
+            put_document_url:       bogus
+
+        dfw_data_visualizer:
+            get_stats_url:          bogus
+
+        dfw_grader:
+            post_ex_attempt_url:    bogus
+
+        user_auth:
+            register_url:           bogus
+            get_info_url:           bogus

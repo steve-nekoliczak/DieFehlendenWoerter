@@ -1,12 +1,14 @@
 from json import loads
 import requests
 
-from api_settings.dfw_data_visualizer import get_stats_url
+from config import yml
 
+
+routes = yml['api_routes']['dfw_data_visualizer']
 
 def get_stats(ex_type, from_datetime=None, to_datetime=None):
     from config import sess
-    response = requests.get(url=get_stats_url,
+    response = requests.get(url=routes['get_stats_url'],
                             params={'user_id': sess['username'],
                                     'ex_type': ex_type,
                                     'from_datetime': from_datetime,
