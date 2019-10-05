@@ -26,7 +26,7 @@ mkdir -p $HOME/projects/dfw
 cd $HOME/projects/dfw
 git clone https://github.com/steve-nekoliczak/DieFehlendenWoerter.git
 cd DieFehlendenWoerter
-python3.7 venv env
+python3.7 -m venv env
 source env/bin/activate
 pip3.7 install -r requirements.txt
 ```
