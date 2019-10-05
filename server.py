@@ -11,7 +11,7 @@ from werkzeug.utils import secure_filename
 
 from config import connex_app, flask_app, file_dir, login_manager
 from api.exercise import put_document
-from models import User
+from models.user import User
 
 
 def get_args():
