@@ -1,7 +1,7 @@
 import os
 
 import config
-from server import get_args
+from args import get_args
 
 activate_this = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                              'venv', 'bin', 'activate_this.py')
