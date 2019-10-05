@@ -1,4 +1,3 @@
-import argparse
 import os
 
 from flask import (
@@ -9,30 +8,10 @@ from flask_login import(
 )
 from werkzeug.utils import secure_filename
 
+from args import get_args
 from config import connex_app, flask_app, file_dir, login_manager
 from api.exercise import put_document
 from models.user import User
-
-
-def get_args():
-    ap = argparse.ArgumentParser('German exercise web app.')
-
-    # Add args
-    ap.add_argument('-d', '--debug',
-                    action='store_true',
-                    help="Enable debugging mode.")
-
-    ap.add_argument('-p', '--port', type=int,
-                    help="Port number to run this service on.",
-                    default=5012)
-
-    ap.add_argument('-f', '--file_dir', type=str,
-                    help="Temporary storage filepath for uploaded text files.",
-                    default=file_dir)
-
-    a = ap.parse_args()
-
-    return a
 
 
 @login_manager.unauthorized_handler
@@ -134,11 +113,9 @@ def favicon():
                                             'static', 'images'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
-
 if __name__ == "__main__":
     args = get_args()
 
     flask_app.config['UPLOAD_FOLDER'] = args.file_dir
 
     connex_app.run(debug=args.debug, port=args.port)
-

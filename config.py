@@ -22,6 +22,8 @@ yml = {}
 with open(settings_file) as f:
     yml = yaml.safe_load(f)[env]
 
+port = yml['port']
+
 drive_letter = os.path.splitdrive(sys.executable)[0]
 if drive_letter:
     drive_letter += '\\'
