@@ -8,8 +8,7 @@ from flask_login import(
 )
 from werkzeug.utils import secure_filename
 
-from args import get_args
-from config import connex_app, flask_app, file_dir, login_manager
+from config import flask_app, login_manager
 from api.exercise import put_document
 from models.user import User
 
@@ -106,16 +105,3 @@ def upload_ex():
 def how_to():
     return render_template("how_to.html")
 
-
-@flask_app.route("/favicon.ico")
-def favicon():
-    return send_from_directory(os.path.join(os.path.dirname(__file__),
-                                            'static', 'images'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
-if __name__ == "__main__":
-    args = get_args()
-
-    flask_app.config['UPLOAD_FOLDER'] = args.file_dir
-
-    connex_app.run(debug=args.debug, port=args.port)
