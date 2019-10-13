@@ -3,7 +3,6 @@ import sys
 import yaml
 
 import connexion
-from flask import session
 from flask_login import LoginManager
 
 
@@ -36,6 +35,3 @@ login_manager = LoginManager()
 login_manager.init_app(flask_app)
 
 connex_app.add_api("rest_api.yml")
-
-sess = session
-

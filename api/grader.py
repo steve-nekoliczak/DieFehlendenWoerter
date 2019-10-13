@@ -2,15 +2,16 @@ from json import loads
 import requests
 
 from config import yml
+from flask import session
 
 
 routes = yml['api_routes']['dfw_grader']
 
+
 def post_ex_attempt(ex_id, topic_word_index, guess):
-    from config import sess
     response = requests.post(url=routes['post_ex_attempt_url'],
                              params={'ex_id': ex_id,
-                                     'user_id': sess['username'],
+                                     'user_id': session['mongo_id'],
                                      'topic_word_index': topic_word_index,
                                      'guess': guess})
     if response.status_code == 200:
@@ -18,4 +19,3 @@ def post_ex_attempt(ex_id, topic_word_index, guess):
         return content
     else:
         return "post_ex_attempt failed.", 404
-

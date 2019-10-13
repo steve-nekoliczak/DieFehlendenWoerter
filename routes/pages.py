@@ -1,9 +1,9 @@
 import os
 
 from flask import (
-    flash, render_template, send_from_directory, redirect, request, url_for
+    flash, render_template, redirect, request, url_for
 )
-from flask_login import(
+from flask_login import (
     login_required, login_user, logout_user
 )
 from werkzeug.utils import secure_filename
@@ -11,6 +11,11 @@ from werkzeug.utils import secure_filename
 from config import flask_app, login_manager
 from api.exercise import put_document
 from models.user import User
+
+
+@login_manager.user_loader
+def load_user(email):
+    return User(email=email).fetch_user()
 
 
 @login_manager.unauthorized_handler
@@ -104,4 +109,3 @@ def upload_ex():
 @login_required
 def how_to():
     return render_template("how_to.html")
-
