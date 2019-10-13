@@ -26,7 +26,7 @@ class User(UserMixin):
 
     def set_session(self, is_successful):
         session['username'] = self.email
-        session['mongo_id'] = self.mongo_id
+        session['mongo_user_id'] = self.mongo_id
         session['is_authenticated'] = is_successful
 
     def register(self):

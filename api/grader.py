@@ -11,7 +11,7 @@ routes = yml['api_routes']['dfw_grader']
 def post_ex_attempt(ex_id, topic_word_index, guess):
     response = requests.post(url=routes['post_ex_attempt_url'],
                              params={'ex_id': ex_id,
-                                     'user_id': session['mongo_id'],
+                                     'user_id': session['mongo_user_id'],
                                      'topic_word_index': topic_word_index,
                                      'guess': guess})
     if response.status_code == 200:

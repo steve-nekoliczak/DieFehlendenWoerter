@@ -10,7 +10,7 @@ routes = yml['api_routes']['dfw_data_visualizer']
 
 def get_stats(ex_type, from_datetime=None, to_datetime=None):
     response = requests.get(url=routes['get_stats_url'],
-                            params={'user_id': session['mongo_id'],
+                            params={'user_id': session['mongo_user_id'],
                                     'ex_type': ex_type,
                                     'from_datetime': from_datetime,
                                     'to_datetime': to_datetime})
