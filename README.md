@@ -24,8 +24,8 @@ Note these steps are assuming you will be setting everything up in `$HOME/projec
 ```
 mkdir -p $HOME/projects/dfw
 cd $HOME/projects/dfw
-git clone https://github.com/steve-nekoliczak/DieFehlendenWoerter.git
-cd DieFehlendenWoerter
+git clone https://github.com/steve-nekoliczak/dfw_frontend.git
+cd dfw_frontend
 python3.7 -m venv env
 source env/bin/activate
 pip3.7 install -r requirements.txt
