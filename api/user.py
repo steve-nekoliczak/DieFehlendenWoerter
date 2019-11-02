@@ -25,3 +25,26 @@ def get_info(email):
     else:
         return {}
 
+def login():
+    email = request.form['email']
+    password = bytes(request.form['password'], 'utf-8')
+    user = User(email, password)
+
+    if 'register' in request.form:
+        got_registered = user.register()
+
+        if got_registered:
+            login_user(user)
+            return redirect(url_for('home'))
+        else:
+            return render_template("login.html")
+
+    else:
+        got_authenticated = user.authenticate()
+
+        if got_authenticated:
+            login_user(user)
+            return redirect(url_for('home'))
+        else:
+            return render_template("login.html")
+

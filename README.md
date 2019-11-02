@@ -22,6 +22,7 @@ You can login with the credentials `steve.nekoliczak@protonmail.com / abc` or cr
 Note these steps are assuming you will be setting everything up in `$HOME/projects/dfw/`.
 
 ```
+sudo apt install npm
 mkdir -p $HOME/projects/dfw
 cd $HOME/projects/dfw
 git clone https://github.com/steve-nekoliczak/dfw_frontend.git

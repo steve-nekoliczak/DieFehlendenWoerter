@@ -49,3 +49,33 @@ def put_document(document_title, document_author, file_path):
     else:
         return False
 
+def upload_ex():
+
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            flash('No file attached')
+            return redirect(request.url)
+
+        title = request.form['title']
+        author = request.form['author']
+        file_ = request.files['file']
+
+        if file_.filename == '':
+            flash('No file selected')
+            return redirect(request.url)
+
+        filename = secure_filename(file_.filename)
+        filepath = os.path.join(flask_app.config['UPLOAD_FOLDER'], filename)
+        file_.save(filepath)
+
+        got_put_document = put_document(title, author, filepath)
+        if got_put_document:
+            flash('File uploaded successfully.')
+        else:
+            flash('File failed to upload.')
+
+        return redirect(request.url)
+
+    else:
+        return render_template("upload_ex.html")
+

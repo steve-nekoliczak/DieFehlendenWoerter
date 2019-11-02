@@ -12,4 +12,3 @@ def favicon():
     return send_from_directory(os.path.join(os.path.dirname(__file__),
                                             'static', 'images'),
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
-
