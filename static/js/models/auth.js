@@ -13,19 +13,19 @@ var Auth = {
     login: function() {
         m.request({
             url: "/api/user/login",
-            params: {email: Auth.username, password: Auth.password}
+            params: {username: Auth.username, password: Auth.password}
         }).then(function(data) {
             localStorage.setItem("auth-token", data.token)
-            m.route.set("/home")
+            m.route.set("/exercise")
         })
     },
     register: function() {
         m.request({
-            url: "/api/user/login",
+            url: "/api/user/register",
             params: {email: Auth.username, password: Auth.password}
         }).then(function(data) {
             localStorage.setItem("auth-token", data.token)
-            m.route.set("/home")
+            m.route.set("/exercise")
         })
     }
 }

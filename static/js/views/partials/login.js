@@ -1,6 +1,6 @@
 var m = require("mithril");
 
-var Auth = require("../../controllers/auth");
+var Auth = require("../../models/auth");
 
 var Login = {
     view: function() {

@@ -1,3 +1,4 @@
+import bcrypt
 from json import loads
 import requests
 
@@ -5,6 +6,7 @@ from config import yml
 
 
 routes = yml['api_routes']['user_auth']
+
 
 def register(email, password):
     response = requests.post(url=routes['register_url'],
@@ -25,26 +27,20 @@ def get_info(email):
     else:
         return {}
 
-def login():
-    email = request.form['email']
-    password = bytes(request.form['password'], 'utf-8')
-    user = User(email, password)
 
-    if 'register' in request.form:
-        got_registered = user.register()
+def login(username, password):
+    password = bytes(password, 'utf-8')
 
-        if got_registered:
-            login_user(user)
-            return redirect(url_for('home'))
-        else:
-            return render_template("login.html")
+    user_dict = get_info(username)
+    if not user_dict:
+        return None
 
+    # mongo_id = str(user_dict['_id']['$oid'])
+    db_password = bytes(user_dict['password'], 'utf-8')
+
+    if bcrypt.checkpw(password, db_password):
+        data = {}
+        data['token'] = 'dummy-token'
+        return data
     else:
-        got_authenticated = user.authenticate()
-
-        if got_authenticated:
-            login_user(user)
-            return redirect(url_for('home'))
-        else:
-            return render_template("login.html")
-
+        return None

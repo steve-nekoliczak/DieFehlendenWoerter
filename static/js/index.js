@@ -8,18 +8,30 @@ var Login = require("./views/login");
 
 m.route(document.body,
     "/exercise", {
-        "/exercise": Exercise,
-        /*
         "/exercise": {
             onmatch: function() {
                 if (!localStorage.getItem("auth-token")) m.route.set("/login")
-                else return Home
+                else return Exercise
             }
         },
-        */
-        "/stats": Stats,
-        "/upload_ex": UploadEx,
-        "/how_to": HowTo,
-        "/login": Login
+        "/stats": {
+            onmatch: function() {
+                if (!localStorage.getItem("auth-token")) m.route.set("/login")
+                else return Stats
+            }
+        },
+        "/upload_ex": {
+            onmatch: function() {
+                if (!localStorage.getItem("auth-token")) m.route.set("/login")
+                else return UploadEx
+            }
+        },
+        "/how_to": {
+            onmatch: function() {
+                if (!localStorage.getItem("auth-token")) m.route.set("/login")
+                else return HowTo
+            }
+        },
+        "/login": Login,
     }
 )
