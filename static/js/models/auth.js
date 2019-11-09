@@ -16,6 +16,7 @@ var Auth = {
             params: {username: Auth.username, password: Auth.password}
         }).then(function(data) {
             localStorage.setItem("auth-token", data.token)
+            localStorage.setItem("username", Auth.username)
             m.route.set("/exercise")
         })
     },

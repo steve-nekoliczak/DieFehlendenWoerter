@@ -6,7 +6,7 @@ var Header = {
             m(".row", [
                 m("h1.banner.eight.columns", "Die Fehlenden Wörter"),
                 m(".four.columns", [
-                    m("span", "{{ current_user.email }}"),
+                    m("span", localStorage.getItem("username") || "anonymous" ),
                     m("span", " | "),
                     m("a[href='#!/logout']", "logout"),
                 ])
